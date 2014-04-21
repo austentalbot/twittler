@@ -8,17 +8,28 @@
     <script>
 
       $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+        // create function to post tweet stream
+        var postTweet = function() {
+          var $body = $('body');
+          $body.html('');
+          var index = streams.home.length - 1;
+          while(index >= 0){
+            var tweet = streams.home[index];
+            var $tweet = $('<div></div>');
+            $tweet.text('@' + tweet.user + ': ' + tweet.message);
+            $tweet.appendTo($body);
+            index -= 1;
+          }
+        };
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
+        //post initial tweets
+        postTweet();
+
+        // create timed function to check for new tweets and post the every 1000 ms
+        setInterval(function() {
+          postTweet();
+        }, 1000);
+
 
       });
 
