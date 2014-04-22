@@ -8,15 +8,20 @@
     <script>
 
       $(document).ready(function(){
+        var $body = $('body');
+        // set refresh interval
+        var refreshInt=10000;
+
         // create function to post tweet stream
         var postTweet = function() {
-          var $body = $('body');
           $body.html('');
           var index = streams.home.length - 1;
+          // pull out tweet info from streams and append
           while(index >= 0){
             var tweet = streams.home[index];
             var $tweet = $('<div></div>');
-            $tweet.text('@' + tweet.user + ': ' + tweet.message);
+            tweet.time=tweet.created_at.toString().slice(4, 24);
+            $tweet.text('@' + tweet.user + ': ' + tweet.message + ' (' + tweet.time + ')');
             $tweet.appendTo($body);
             index -= 1;
           }
@@ -28,7 +33,7 @@
         // create timed function to check for new tweets and post the every 1000 ms
         setInterval(function() {
           postTweet();
-        }, 1000);
+        }, refreshInt);
 
 
       });
