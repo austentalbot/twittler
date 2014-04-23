@@ -17,9 +17,9 @@
         var $tweets = $('#tweets');
 
         // set refresh interval
-        var refreshInt=2000;
+        var refreshInt=5000;
 
-        // adjust page title
+        // adjust page body and title
         var $body = $('#body');
         $body.css('margin', '0px');
         $body.css('padding', '0px');
@@ -57,11 +57,16 @@
           // pull out tweet info from streams and append
           while(index >= 0){
             var tweet = streams.home[index];
-            var $tweet = $('<div style="width:680px;height:25px;border:1px solid black;border-radius:5px;background-color:white;"></div>');
+            var $tweet = $('<div style="width:700px;height:25px;border:1px solid black;border-radius:5px;background-color:white; line-height: 25px;"></div>');
             tweet.time=tweet.created_at.toString().slice(4, 24);
             $tweet.text('@' + tweet.user + ': ' + tweet.message + ' (' + tweet.time + ')');
             $tweet.appendTo($tweets);
             index -= 1;
+
+            // add some padding
+            var $pad=$('<div style="height:5px;"></div>');
+            $pad.appendTo($tweets);
+
           }
         };
 
