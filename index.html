@@ -8,7 +8,7 @@
     <h1>Twitter</h1>
     <h3> Twitt Stream</h1>
   </header>
-  <body>
+  <body bgcolor="#d3d3d3">
     <div class='stream-wrapper'>
       <table class='tweet-stream' id='tweets'></table>
     </div>
@@ -27,7 +27,7 @@
           // pull out tweet info from streams and append
           while(index >= 0){
             var tweet = streams.home[index];
-            var $tweet = $('<div></div>');
+            var $tweet = $('<div style="width:670px;height:25px;border:1px solid black;border-radius:5px;background-color:white;"></div>');
             tweet.time=tweet.created_at.toString().slice(4, 24);
             $tweet.text('@' + tweet.user + ': ' + tweet.message + ' (' + tweet.time + ')');
             $tweet.appendTo($tweets);
