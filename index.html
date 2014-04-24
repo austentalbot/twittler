@@ -84,18 +84,50 @@
             index -= 1;
           }
 
-          // create event handler to switch to user-specific feed
+          // add event handler to switch to user-specific feed
+          switchStreams();
+
+        };
+
+        // create event handler function to switch to user-specific feed
+        var switchStreams = function() {
           $('.fullStreamTweet').click(function() {
             // turn off timer to stop feed refresh
             clearInterval(timer);
 
             // clear all current tweets
             $tweets.html('');
+
+            // post tweets from selected account
+            var user = ($(this).attr('id'));
+
+            var index = streams.users[user].length - 1;
+            // pull out tweet info from streams and append
+            while(index >= 0){
+              var tweet = streams.users[user][index];
+              // add some padding
+              var $pad=$('<div style="height:4px;"></div>');
+              $pad.appendTo($tweets);
+
+              // format twitt
+              var $tweet = $('<div style="width:700px;height:25px;border:1px solid black;border-radius:5px;background-color:white; line-height: 25px;"></div>');
+              $tweet.css('font-family', fontFam);
+              $tweet.css('font-size', '13px');
+              tweet.time=tweet.created_at.toString().slice(4, 24);
+              $tweet.text('@' + tweet.user + ': ' + tweet.message + ' (' + tweet.time + ')');
+
+              // add id for user
+              $tweet.attr('class', 'fullStreamTweet');
+              $tweet.attr('id', tweet.user);
+
+              // add twitt to stream
+              $tweet.appendTo($tweets);
+              index -= 1;
+            }
+
+
           });
-
         };
-
-
 
         //post initial tweets
         postTweet();
