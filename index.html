@@ -16,6 +16,9 @@
         // create variable to hold tweets
         var $tweets = $('#tweets');
 
+        // set font family var
+        var fontFam='Trebuchet MS';
+
         // set refresh interval
         var refreshInt=5000;
 
@@ -23,7 +26,7 @@
         var $body = $('#body');
         $body.css('margin', '0px');
         $body.css('padding', '0px');
-        $body.css('background-color', '#d3d3d3')
+        $body.css('background-color', '#e4ede4')
 
         var $title = $('#title');
         $title.html('');
@@ -34,19 +37,23 @@
         var $mainTitle=$('<div></div>');
         $mainTitle.text('Twittler');
         $mainTitle.css('width', '100%');
-        $mainTitle.css('background-color', 'white');
+        $mainTitle.css('background-color', '#008500');
+        $mainTitle.css('color', 'white');
         $mainTitle.css('margin', '0px');
         $mainTitle.css('padding', '0px');
-        $mainTitle.css('font-size', '35px')
+        $mainTitle.css('font-size', '35px');
+        $mainTitle.css('font-family', fontFam);
         $mainTitle.appendTo($title);
 
         var $subTitle=$('<div></div>');
         $subTitle.text('Twitt feed');
         $subTitle.css('width', '100%');
-        $subTitle.css('background-color', 'white');
+        $subTitle.css('background-color', '#269926');
+        $subTitle.css('color', 'white');
         $subTitle.css('margin', '0px');
         $subTitle.css('padding', '0px');
         $subTitle.css('font-size', '25px')
+        $subTitle.css('font-family', fontFam);
         $subTitle.appendTo($title);
 
 
@@ -57,16 +64,20 @@
           // pull out tweet info from streams and append
           while(index >= 0){
             var tweet = streams.home[index];
-            var $tweet = $('<div style="width:700px;height:25px;border:1px solid black;border-radius:5px;background-color:white; line-height: 25px;"></div>');
-            tweet.time=tweet.created_at.toString().slice(4, 24);
-            $tweet.text('@' + tweet.user + ': ' + tweet.message + ' (' + tweet.time + ')');
-            $tweet.appendTo($tweets);
-            index -= 1;
-
             // add some padding
-            var $pad=$('<div style="height:5px;"></div>');
+            var $pad=$('<div style="height:4px;"></div>');
             $pad.appendTo($tweets);
 
+            // format twitt
+            var $tweet = $('<div style="width:700px;height:25px;border:1px solid black;border-radius:5px;background-color:white; line-height: 25px;"></div>');
+            $tweet.css('font-family', fontFam);
+            $tweet.css('font-size', '13px');
+            tweet.time=tweet.created_at.toString().slice(4, 24);
+            $tweet.text('@' + tweet.user + ': ' + tweet.message + ' (' + tweet.time + ')');
+
+            // add twitt to stream
+            $tweet.appendTo($tweets);
+            index -= 1;
           }
         };
 
