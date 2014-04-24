@@ -57,32 +57,9 @@
         $subTitle.appendTo($title);
 
 
-        // create function to post tweet stream
-        var postTweet = function() {
-          $tweets.html('');
-          var index = streams.home.length - 1;
-          // pull out tweet info from streams and append
-          while(index >= 0){
-            var tweet = streams.home[index];
-            // add some padding
-            var $pad=$('<div style="height:4px;"></div>');
-            $pad.appendTo($tweets);
-
-            // format twitt
-            var $tweet = $('<div style="width:700px;height:25px;border:1px solid black;border-radius:5px;background-color:white; line-height: 25px;"></div>');
-            $tweet.css('font-family', fontFam);
-            $tweet.css('font-size', '13px');
-            tweet.time=tweet.created_at.toString().slice(4, 24);
-            $tweet.text('@' + tweet.user + ': ' + tweet.message + ' (' + tweet.time + ')');
-
-            // add id for user
-            $tweet.attr('class', 'fullStreamTweet');
-            $tweet.attr('id', tweet.user);
-
-            // add twitt to stream
-            $tweet.appendTo($tweets);
-            index -= 1;
-          }
+        // create function to post main tweet stream
+        var postAllTweets = function() {
+          postTweets(streams.home)
 
           // add event handler to switch to user-specific feed
           switchStreams();
@@ -95,46 +72,53 @@
             // turn off timer to stop feed refresh
             clearInterval(timer);
 
-            // clear all current tweets
-            $tweets.html('');
-
-            // post tweets from selected account
             var user = ($(this).attr('id'));
 
-            var index = streams.users[user].length - 1;
-            // pull out tweet info from streams and append
-            while(index >= 0){
-              var tweet = streams.users[user][index];
-              // add some padding
-              var $pad=$('<div style="height:4px;"></div>');
-              $pad.appendTo($tweets);
-
-              // format twitt
-              var $tweet = $('<div style="width:700px;height:25px;border:1px solid black;border-radius:5px;background-color:white; line-height: 25px;"></div>');
-              $tweet.css('font-family', fontFam);
-              $tweet.css('font-size', '13px');
-              tweet.time=tweet.created_at.toString().slice(4, 24);
-              $tweet.text('@' + tweet.user + ': ' + tweet.message + ' (' + tweet.time + ')');
-
-              // add id for user
-              $tweet.attr('class', 'fullStreamTweet');
-              $tweet.attr('id', tweet.user);
-
-              // add twitt to stream
-              $tweet.appendTo($tweets);
-              index -= 1;
-            }
-
+            // post tweets from selected account
+            postTweets(streams.users[user]);
 
           });
         };
 
+        var postTweets = function(feed) {
+          $tweets.html('');
+          var index = feed.length - 1;
+          // pull out tweet info from streams and append
+          while(index >= 0){
+            var tweet = feed[index];
+            // add some padding
+            var $pad=$('<div style="height:4px;"></div>');
+            $pad.appendTo($tweets);
+
+            // format twitt
+            var $tweet = $('<div style="width:700px;height:25px;border:1px solid black;border-radius:5px;background-color:white; line-height: 25px;"></div>');
+            $tweet.css('font-family', fontFam);
+            $tweet.css('font-size', '13px');
+            tweet.time=tweet.created_at.toString().slice(4, 24);
+            $tweet.text('@' + tweet.user + ': ' + tweet.message + ' (' + tweet.time + ')');
+
+            // add id for user
+            if (feed===streams.home) {
+              $tweet.attr('class', 'fullStreamTweet');
+            } else {
+              $tweet.attr('class', 'userSpecificTweet');
+            }
+            
+            $tweet.attr('id', tweet.user);
+
+            // add twitt to stream
+            $tweet.appendTo($tweets);
+            index -= 1;
+          }
+        };
+
+
         //post initial tweets
-        postTweet();
+        postAllTweets();
 
         // create timed function to check for new tweets and post the every 1000 ms
         var timer = setInterval(function() {
-          postTweet();
+          postAllTweets();
         }, refreshInt);
 
 
