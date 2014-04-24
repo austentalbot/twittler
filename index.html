@@ -20,7 +20,7 @@
         var fontFam='Trebuchet MS';
 
         // set refresh interval
-        var refreshInt=5000;
+        var refreshInt=500000;
 
         // adjust page body and title
         var $body = $('#body');
@@ -75,11 +75,17 @@
             tweet.time=tweet.created_at.toString().slice(4, 24);
             $tweet.text('@' + tweet.user + ': ' + tweet.message + ' (' + tweet.time + ')');
 
+            // add id for user
+            $tweet.arrt('class', 'fullStreamTweet');
+            $tweet.attr('id', tweet.user);
+
             // add twitt to stream
             $tweet.appendTo($tweets);
             index -= 1;
           }
         };
+
+
 
         //post initial tweets
         postTweet();
