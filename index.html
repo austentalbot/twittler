@@ -20,7 +20,7 @@
         var fontFam='Trebuchet MS';
 
         // set refresh interval
-        var refreshInt=500000;
+        var refreshInt=2000;
 
         // adjust page body and title
         var $body = $('#body');
@@ -76,13 +76,23 @@
             $tweet.text('@' + tweet.user + ': ' + tweet.message + ' (' + tweet.time + ')');
 
             // add id for user
-            $tweet.arrt('class', 'fullStreamTweet');
+            $tweet.attr('class', 'fullStreamTweet');
             $tweet.attr('id', tweet.user);
 
             // add twitt to stream
             $tweet.appendTo($tweets);
             index -= 1;
           }
+
+          // create event handler to switch to user-specific feed
+          $('.fullStreamTweet').click(function() {
+            // turn off timer to stop feed refresh
+            clearInterval(timer);
+
+            // clear all current tweets
+            $tweets.html('');
+          });
+
         };
 
 
@@ -91,7 +101,7 @@
         postTweet();
 
         // create timed function to check for new tweets and post the every 1000 ms
-        setInterval(function() {
+        var timer = setInterval(function() {
           postTweet();
         }, refreshInt);
 
