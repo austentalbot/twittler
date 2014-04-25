@@ -44,6 +44,7 @@
         $mainTitle.css('padding', '0px');
         $mainTitle.css('font-size', '35px');
         $mainTitle.css('font-family', fontFam);
+        $mainTitle.attr('id', 'mainTitle');
         $mainTitle.appendTo($title);
 
         var $subTitle=$('<div></div>');
@@ -107,7 +108,9 @@
             // turn off timer to stop feed refresh
             clearInterval(timer);
 
+            // rename subtitle
             var user = ($(this).attr('id'));
+            $('#subTitle').text(user);
             // post tweets from selected account
             postTweets(streams.users[user]);
             timer = setInterval(function() {
@@ -119,9 +122,12 @@
 
         // create event hadler fuction to switch back to full feed
         var switchToFull = function() {
-          $('#subTitle').click(function() {
+          $('#mainTitle').click(function() {
             // turn off timer to stop feed refresh
             clearInterval(timer);
+
+            // rename subtitle
+            $('#subTitle').text('Twitt feed');
 
             postAllTweets();
             timer = setInterval(function() {
