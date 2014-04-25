@@ -13,6 +13,7 @@
     <script>
 
       $(document).ready(function(){
+        var timer;
         // create variable to hold tweets
         var $tweets = $('#tweets');
 
@@ -109,6 +110,9 @@
             var user = ($(this).attr('id'));
             // post tweets from selected account
             postTweets(streams.users[user]);
+            timer = setInterval(function() {
+              postTweets(streams.users[user]);
+            }, refreshInt);
           
           });
         };
@@ -116,7 +120,13 @@
         // create event hadler fuction to switch back to full feed
         var switchToFull = function() {
           $('#subTitle').click(function() {
+            // turn off timer to stop feed refresh
+            clearInterval(timer);
+
             postAllTweets();
+            timer = setInterval(function() {
+              postAllTweets();
+            }, refreshInt);
           });
         };
 
@@ -126,7 +136,7 @@
         postAllTweets();
 
         // create timed function to check for new tweets and post the every 1000 ms
-        var timer = setInterval(function() {
+        timer = setInterval(function() {
           postAllTweets();
         }, refreshInt);
 
